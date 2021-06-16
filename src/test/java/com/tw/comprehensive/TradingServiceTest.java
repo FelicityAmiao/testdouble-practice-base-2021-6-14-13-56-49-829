@@ -33,4 +33,18 @@ class TradingServiceTest {
 
     assertEquals(expected, result);
   }
+
+  @Test
+  void should_return_repository_result_when_call_createTrade_given_a_trade() {
+    TradeRepository stubTradeRepository = mock(TradeRepository.class);
+    TradingService tradingService = new TradingService(stubTradeRepository, new AuditService());
+    Trade dummyTrade = mock(Trade.class);
+    long expected = 1L;
+    when(stubTradeRepository.createTrade(dummyTrade)).thenReturn(expected);
+
+    Long result = tradingService.createTrade(dummyTrade);
+
+    verify(stubTradeRepository, times(1)).createTrade(dummyTrade);
+    assertEquals(expected, result);
+  }
 }
