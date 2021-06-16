@@ -1,9 +1,11 @@
 package com.tw.comprehensive;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,5 +20,17 @@ class TradingServiceTest {
     tradingService.createTrade(mockTrade);
 
     verify(spyAuditService, times(1)).logNewTrade(mockTrade);
+  }
+
+  @Test
+  void should_return_repository_result_when_call_findTrade_given_id_1L() {
+    TradeRepository tradeRepository = mock(TradeRepository.class);
+    TradingService tradingService = new TradingService(tradeRepository, new AuditService());
+    Trade expected = mock(Trade.class);
+    when(tradeRepository.findById(1L)).thenReturn(expected);
+
+    Trade result = tradingService.findTrade(1L);
+
+    assertEquals(expected, result);
   }
 }
